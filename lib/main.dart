@@ -44,126 +44,105 @@ class _FirstPageState extends State<FirstPage> {
             padding:
                 const EdgeInsets.only(bottom: 0, left: 15, top: 100, right: 15),
             children: [
-              IconButton(
-                  icon: Image.asset(
-                    "assets/images/camera_icon.jpg",
-                    // width: 100,
-                    // height: 100,
-                    fit: BoxFit.fill,
-                    // color: Colors.green,
-                  ),
+              InkWell(
+                onTap: () {
+                  print("대체텍스트");
+                },
+                onDoubleTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const HomePage()),
+                  );
+                },
+                splashColor: Colors.blue, // 탭할 때 버튼 주변에 파란색 원형 애니메이션 생성
+                child: Container(
                   padding: const EdgeInsets.all(5.0),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => const HomePage()),
-                    );
-                  }),
-              IconButton(
-                  icon: Image.asset(
-                    "assets/images/ocr.png",
-                    // width: 100,
-                    // height: 100,
-                    fit: BoxFit.fill,
-                    // color: Colors.green,
-                  ),
+                  child: Image.asset("assets/images/camera_icon.jpg"),
+                ),
+              ),
+              InkWell(
+                onTap: () {
+                  print("대체텍스트");
+                },
+                onDoubleTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const HomePage()),
+                  );
+                },
+                splashColor: Colors.blue, // 탭할 때 버튼 주변에 파란색 원형 애니메이션 생성
+                child: Container(
                   padding: const EdgeInsets.all(5.0),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => const HomePage()),
-                    );
-                  }),
-              IconButton(
-                  icon: Image.asset(
-                    "assets/images/mic.jpg",
-                    // width: 100,
-                    // height: 100,
-                    fit: BoxFit.fill,
-                    // color: Colors.green,
-                  ),
+                  child: Image.asset("assets/images/ocr.png"),
+                ),
+              ),
+              InkWell(
+                onTap: () {
+                  print("대체텍스트");
+                },
+                onDoubleTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const HomePage()),
+                  );
+                },
+                splashColor: Colors.blue, // 탭할 때 버튼 주변에 파란색 원형 애니메이션 생성
+                child: Container(
                   padding: const EdgeInsets.all(5.0),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => const HomePage()),
-                    );
-                  }),
-              IconButton(
-                  icon: Image.asset(
-                    "assets/images/setup.png",
-                    // width: 100,
-                    // height: 100,
-                    fit: BoxFit.fill,
-                    // color: Colors.green,
-                  ),
+                  child: Image.asset("assets/images/mic.jpg"),
+                ),
+              ),
+              InkWell(
+                onTap: () {
+                  print("대체텍스트");
+                },
+                onDoubleTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const HomePage()),
+                  );
+                },
+                splashColor: Colors.blue, // 탭할 때 버튼 주변에 파란색 원형 애니메이션 생성
+                child: Container(
                   padding: const EdgeInsets.all(5.0),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => const HomePage()),
-                    );
-                  }),
-              IconButton(
-                  icon: Image.asset(
-                    "assets/images/camera_icon.jpg",
-                    // width: 100,
-                    // height: 100,
-                    fit: BoxFit.fill,
-                    color: Colors.black,
-                  ),
+                  child: Image.asset("assets/images/setup.png"),
+                ),
+              ),
+              InkWell(
+                onTap: () {
+                  print("대체텍스트");
+                },
+                onDoubleTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const HomePage()),
+                  );
+                },
+                splashColor: Colors.blue, // 탭할 때 버튼 주변에 파란색 원형 애니메이션 생성
+                child: Container(
                   padding: const EdgeInsets.all(5.0),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => const HomePage()),
-                    );
-                  }),
-              IconButton(
-                  icon: Image.asset(
-                    "assets/images/camera_icon.jpg",
-                    // width: 100,
-                    // height: 100,
-                    fit: BoxFit.fill,
-                    color: Colors.black,
-                  ),
+                  child: Image.asset("assets/images/camera_icon.jpg"),
+                ),
+              ),
+              InkWell(
+                onTap: () {
+                  print("대체텍스트");
+                },
+                onDoubleTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const HomePage()),
+                  );
+                },
+                splashColor: Colors.blue, // 탭할 때 버튼 주변에 파란색 원형 애니메이션 생성
+                child: Container(
                   padding: const EdgeInsets.all(5.0),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => const HomePage()),
-                    );
-                  })
+                  child: Image.asset("assets/images/camera_icon.jpg"),
+                ),
+              ),
             ]));
   }
 }
-
-// class FirstPage extends StatelessWidget {
-//   const FirstPage({super.key});
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//         appBar: AppBar(
-//           title: const Text('CureEYE DEMO'),
-//         ),
-//         body: IconButton(
-//           icon: Image.asset(
-//             "assets/images/camera_icon2.jpg",
-//             // width: 100,
-//             // height: 1000,
-//             fit: BoxFit.fill,
-//           ),
-//           padding: EdgeInsets.zero,
-//           onPressed: () {
-//             Navigator.push(
-//               context,
-//               MaterialPageRoute(builder: (context) => const HomePage()),
-//             );
-//           },
-//         ));
-//   }
-// }
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
