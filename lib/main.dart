@@ -1,6 +1,13 @@
-import 'package:flutter_tts/flutter_tts.dart';
 import 'package:flutter/material.dart';
-import 'package:simple_barcode_scanner/simple_barcode_scanner.dart';
+import 'package:flutter_tts/flutter_tts.dart';
+import 'package:flutter_animated_icons/icons8.dart';
+import 'package:lottie/lottie.dart';
+import 'package:bootstrap_icons/bootstrap_icons.dart';
+import 'package:boxicons/boxicons.dart';
+import 'package:iconforest_teenyicons/teenyicons.dart';
+import 'themedata.dart';
+import 'soundsetpage.dart';
+import 'barcodepage.dart';
 
 void main() {
   runApp(const MyApp());
@@ -9,14 +16,23 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
+  static final ValueNotifier<ThemeMode> themeNotifier =
+      ValueNotifier(ThemeMode.light);
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
-      theme: ThemeData(primarySwatch: Colors.blue),
-      home: const HomePage(),
-    );
+    return ValueListenableBuilder<ThemeMode>(
+        valueListenable: themeNotifier,
+        builder: (_, ThemeMode currentMode, __) {
+          return MaterialApp(
+            debugShowCheckedModeBanner: false,
+            title: 'Flutter Demo',
+            darkTheme: dark,
+            theme: light,
+            themeMode: currentMode,
+            home: const HomePage(),
+          );
+        });
   }
 }
 
@@ -27,247 +43,197 @@ class HomePage extends StatefulWidget {
   _HomePageState createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   FlutterTts flutterTts = FlutterTts();
+  late AnimationController _qrController;
+  late AnimationController _imageController;
+  late AnimationController _soundController;
+
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          title: const Text('CureEYE DEMO'),
-          centerTitle: true,
-          backgroundColor: Colors.black,
-          elevation: 0,
-        ),
-        body: GridView.count(
-            crossAxisCount: 2, // 1개 행에 항목 3개씩
-            mainAxisSpacing: 0,
-            crossAxisSpacing: 0,
-            childAspectRatio: 1,
-            padding:
-                const EdgeInsets.only(bottom: 0, left: 15, top: 100, right: 15),
-            children: [
-              InkWell(
-                onTap: () async {
-                  await flutterTts.speak('포장지 인식');
-                },
-                onDoubleTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const BarcodePage()),
-                  );
-                },
-                highlightColor: Colors.blue, // 터치할 때 버튼 주변에 반짝거리는 애니메이션 생성
-                child: Container(
-                  padding: const EdgeInsets.all(5.0),
-                  child: const Icon(
-                    Icons.qr_code_scanner,
-                    size: 160,
-                  ),
-                ),
-              ),
-              InkWell(
-                onTap: () async {
-                  await flutterTts.speak('알약 인식');
-                },
-                onDoubleTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const BarcodePage()),
-                  );
-                },
-                highlightColor: Colors.blue, // 탭할 때 버튼 주변에 파란색 원형 애니메이션 생성
-                child: Container(
-                  padding: const EdgeInsets.all(5.0),
-                  child: const Icon(
-                    Icons.medication,
-                    size: 180,
-                  ),
-                ),
-              ),
-              InkWell(
-                onTap: () async {
-                  await flutterTts.speak('소리 설정');
-                },
-                onDoubleTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const BarcodePage()),
-                  );
-                },
-                highlightColor: Colors.blue, // 탭할 때 버튼 주변에 파란색 원형 애니메이션 생성
-                child: Container(
-                  padding: const EdgeInsets.all(5.0),
-                  child: const Icon(
-                    Icons.volume_up,
-                    size: 180,
-                  ),
-                ),
-              ),
-              InkWell(
-                onTap: () async {
-                  await flutterTts.speak('화면 설정');
-                },
-                onDoubleTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const DisplayPage()),
-                  );
-                },
-                highlightColor: Colors.blue, // 탭할 때 버튼 주변에 파란색 원형 애니메이션 생성
-                child: Container(
-                  padding: const EdgeInsets.all(5.0),
-                  child: const Icon(
-                    Icons.settings_brightness,
-                    size: 180,
-                  ),
-                ),
-              ),
-            ]));
+  void initState() {
+    super.initState();
+
+    _qrController =
+        AnimationController(vsync: this, duration: const Duration(seconds: 1));
+    _imageController =
+        AnimationController(vsync: this, duration: const Duration(seconds: 1));
+    _soundController =
+        AnimationController(vsync: this, duration: const Duration(seconds: 1));
   }
-}
-
-class BarcodePage extends StatefulWidget {
-  const BarcodePage({Key? key}) : super(key: key);
 
   @override
-  State<BarcodePage> createState() => _BarcodePageState();
-}
+  void dispose() {
+    _qrController.dispose();
+    _imageController.dispose();
+    _soundController.dispose();
 
-class _BarcodePageState extends State<BarcodePage> {
-  String result = '';
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('CureEYE DEMO'),
-        centerTitle: true,
-        backgroundColor: Colors.black,
-      ),
-      body: Center(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            ElevatedButton(
-              onPressed: () async {
-                var res = await Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const SimpleBarcodeScannerPage(),
-                    ));
-                setState(() {
-                  if (res is String) {
-                    result = res;
-                  }
-                });
-              },
-              child: const Text('Camera'),
-            ),
-            Text('Barcode Result: $result'),
-          ],
-        ),
-      ),
-    );
+    super.dispose();
   }
-}
 
-class DisplayPage extends StatefulWidget {
-  const DisplayPage({Key? key}) : super(key: key);
-
-  @override
-  State<DisplayPage> createState() => _DisplayPageState();
-}
-
-class _DisplayPageState extends State<DisplayPage> {
-  FlutterTts flutterTts = FlutterTts();
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('CureEYE DEMO'),
-        centerTitle: true,
-        backgroundColor: Colors.black,
-      ),
-      body: GridView.count(
-          crossAxisCount: 2, // 1개 행에 항목 3개씩
-          mainAxisSpacing: 0,
-          crossAxisSpacing: 0,
-          childAspectRatio: 1,
-          padding:
-              const EdgeInsets.only(bottom: 0, left: 15, top: 100, right: 15),
-          children: [
-            InkWell(
-              onTap: () async {
-                await flutterTts.speak('검은색');
-              },
-              onDoubleTap: () {
-                print("색상변환");
-              },
-              highlightColor: Colors.blue, // 탭할 때 버튼 주변에 파란색 원형 애니메이션 생성
-              child: Container(
-                padding: const EdgeInsets.all(5.0),
-                child: const Icon(
-                  Icons.contrast,
-                  color: Colors.black,
-                  size: 170,
-                ),
+    return ValueListenableBuilder<ThemeMode>(
+        valueListenable: MyApp.themeNotifier,
+        builder: (_, ThemeMode currentMode, __) {
+          return Scaffold(
+              appBar: AppBar(
+                title: const Text('CureEYE DEMO'),
+                centerTitle: true,
+                // backgroundColor: null,
+                elevation: 0,
               ),
-            ),
-            InkWell(
-              onTap: () async {
-                await flutterTts.speak('파란색');
-              },
-              onDoubleTap: () {
-                print("색상변환");
-              },
-              highlightColor: Colors.blue, // 탭할 때 버튼 주변에 파란색 원형 애니메이션 생성
-              child: Container(
-                padding: const EdgeInsets.all(5.0),
-                child: const Icon(
-                  Icons.contrast,
-                  color: Colors.blue,
-                  size: 170,
-                ),
-              ),
-            ),
-            InkWell(
-              onTap: () async {
-                await flutterTts.speak('빨간색');
-              },
-              onDoubleTap: () {
-                print("색상변환");
-              },
-              highlightColor: Colors.blue, // 탭할 때 버튼 주변에 파란색 원형 애니메이션 생성
-              child: Container(
-                padding: const EdgeInsets.all(5.0),
-                child: const Icon(
-                  Icons.contrast,
-                  color: Colors.red,
-                  size: 170,
-                ),
-              ),
-            ),
-            InkWell(
-              onTap: () async {
-                await flutterTts.speak('초록색');
-              },
-              onDoubleTap: () {
-                print("색상변환");
-              },
-              highlightColor: Colors.blue, // 탭할 때 버튼 주변에 파란색 원형 애니메이션 생성
-              child: Container(
-                padding: const EdgeInsets.all(5.0),
-                child: const Icon(
-                  Icons.contrast,
-                  color: Colors.green,
-                  size: 170,
-                ),
-              ),
-            ),
-          ]),
-    );
+              body: GridView.count(
+                  crossAxisCount: 2,
+                  mainAxisSpacing: 1,
+                  crossAxisSpacing: 1,
+                  childAspectRatio: 1,
+                  padding: const EdgeInsets.only(
+                      bottom: 0, left: 15, top: 100, right: 15),
+                  children: [
+                    InkWell(
+                      onTap: () async {
+                        await flutterTts.speak('포장지 인식');
+                        _qrController.reset();
+                        _qrController.forward();
+                      },
+                      onDoubleTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const BarcodePage()),
+                        );
+                      },
+                      // highlightColor: Colors.Blue,
+                      hoverColor: Colors.yellowAccent,
+                      borderRadius: BorderRadius.circular(100),
+                      child: Container(
+                          decoration: BoxDecoration(
+                              border: Border.all(
+                                  color: MyApp.themeNotifier.value ==
+                                          ThemeMode.light
+                                      ? Colors.black
+                                      : Colors.white,
+                                  width: 3.0),
+                              borderRadius: BorderRadius.circular(100)),
+                          padding: const EdgeInsets.all(5.0),
+                          child: Transform.scale(
+                              scale: 1.7,
+                              child:
+                                  MyApp.themeNotifier.value == ThemeMode.light
+                                      ? Lottie.asset(Icons8.qr_code,
+                                          controller: _qrController)
+                                      : const Icon(
+                                          BootstrapIcons.qr_code_scan,
+                                          size: 50,
+                                        ))),
+                    ),
+                    InkWell(
+                      onTap: () async {
+                        await flutterTts.speak('알약 인식');
+                        _imageController.reset();
+                        _imageController.forward();
+                      },
+                      onDoubleTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const BarcodePage()),
+                        );
+                      },
+                      // highlightColor: Colors.blue,
+                      hoverColor: Colors.yellowAccent,
+                      borderRadius: BorderRadius.circular(100),
+                      child: Container(
+                        decoration: BoxDecoration(
+                            border: Border.all(
+                                color:
+                                    MyApp.themeNotifier.value == ThemeMode.light
+                                        ? Colors.black
+                                        : Colors.white,
+                                width: 3.0),
+                            borderRadius: BorderRadius.circular(100)),
+                        padding: const EdgeInsets.all(5.0),
+                        child: Transform.scale(
+                            scale: 1.7,
+                            child: MyApp.themeNotifier.value == ThemeMode.light
+                                ? Lottie.asset(Icons8.portrait_mode_scanning,
+                                    controller: _imageController)
+                                : const Icon(Boxicons.bx_scan, size: 60)),
+                      ),
+                    ),
+                    InkWell(
+                      onTap: () async {
+                        await flutterTts.speak('소리 설정');
+                        _soundController.reset();
+                        _soundController.forward();
+                      },
+                      onDoubleTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const SoundsetPage()),
+                        );
+                      },
+                      // highlightColor: Colors.blue,
+                      hoverColor: Colors.yellowAccent,
+                      borderRadius: BorderRadius.circular(
+                          100), // 탭할 때 버튼 주변에 파란색 원형 애니메이션 생성
+                      child: Container(
+                        decoration: BoxDecoration(
+                            border: Border.all(
+                                color:
+                                    MyApp.themeNotifier.value == ThemeMode.light
+                                        ? Colors.black
+                                        : Colors.white,
+                                width: 3.0),
+                            borderRadius: BorderRadius.circular(100)),
+                        padding: const EdgeInsets.all(5.0),
+                        child: (MyApp.themeNotifier.value == ThemeMode.light
+                            ? Transform.scale(
+                                scale: 1.7,
+                                child: Lottie.asset(Icons8.adjust,
+                                    controller: _soundController))
+                            : Transform.scale(
+                                scale: 0.4,
+                                child: const Teenyicons(
+                                  Teenyicons.adjust_vertical_outline,
+                                  color: Colors.white,
+                                ))),
+                      ),
+                    ),
+                    InkWell(
+                      onTap: () async {
+                        await flutterTts.speak('화면 설정');
+                      },
+                      onDoubleTap: () {
+                        MyApp.themeNotifier.value =
+                            MyApp.themeNotifier.value == ThemeMode.light
+                                ? ThemeMode.dark
+                                : ThemeMode.light;
+                      },
+                      // highlightColor: Colors.blue,
+                      hoverColor: Colors.yellowAccent,
+                      borderRadius: BorderRadius.circular(
+                          100), // 탭할 때 버튼 주변에 파란색 원형 애니메이션 생성
+                      child: Container(
+                        decoration: BoxDecoration(
+                            border: Border.all(
+                                color:
+                                    MyApp.themeNotifier.value == ThemeMode.light
+                                        ? Colors.black
+                                        : Colors.white,
+                                width: 3.0),
+                            borderRadius: BorderRadius.circular(100)),
+                        padding: const EdgeInsets.all(5.0),
+                        child: Icon(
+                          MyApp.themeNotifier.value == ThemeMode.light
+                              ? Icons.dark_mode
+                              : Icons.light_mode,
+                          size: 140,
+                        ),
+                      ),
+                    )
+                  ]));
+        });
   }
 }
