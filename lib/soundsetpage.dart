@@ -68,10 +68,10 @@ class _SoundsetPageState extends State<SoundsetPage>
   void getSpeechRateFromPrefs() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     double savedRate =
-        prefs.getDouble('rate') ?? 1.0; // 이전에 저장된 소리 크기가 없으면 초기값 1.0을 사용합니다.
+        prefs.getDouble('rate') ?? 1.0; // 이전에 저장된 소리 속도가 없으면 초기값 1.0을 사용합니다.
     setState(() {
       rate = savedRate;
-      flutterTts.setSpeechRate(rate); // 가져온 소리 크기를 적용합니다.
+      flutterTts.setSpeechRate(rate); // 가져온 소리 속도를 적용합니다.
     });
   }
 
@@ -82,7 +82,7 @@ class _SoundsetPageState extends State<SoundsetPage>
 
   void saveSpeechRateToPrefs() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setDouble('rate', rate); // 현재 소리 크기를 저장합니다.
+    prefs.setDouble('rate', rate); // 현재 소리 속도를 저장합니다.
   }
 
   @override
@@ -106,7 +106,6 @@ class _SoundsetPageState extends State<SoundsetPage>
                   ],
                 ),
                 centerTitle: true,
-                // backgroundColor: null,
               ),
               body: Container(
                 margin: const EdgeInsets.all(4),
@@ -145,7 +144,7 @@ class _SoundsetPageState extends State<SoundsetPage>
                             });
                           }
                         },
-                        // highlightColor: Colors.blue,
+                        highlightColor: Colors.blue,
                         hoverColor: Colors.yellowAccent,
                         borderRadius: BorderRadius.circular(100),
                         child: Container(
@@ -187,7 +186,7 @@ class _SoundsetPageState extends State<SoundsetPage>
                             });
                           }
                         },
-                        // highlightColor: Colors.blue,
+                        highlightColor: Colors.blue,
                         hoverColor: Colors.yellowAccent,
                         borderRadius: BorderRadius.circular(100),
                         child: Container(
@@ -229,7 +228,7 @@ class _SoundsetPageState extends State<SoundsetPage>
                             });
                           }
                         },
-                        // highlightColor: Colors.blue,
+                        highlightColor: Colors.blue,
                         hoverColor: Colors.yellowAccent,
                         borderRadius: BorderRadius.circular(100),
                         child: Container(
@@ -269,7 +268,7 @@ class _SoundsetPageState extends State<SoundsetPage>
                             });
                           }
                         },
-                        // highlightColor: Colors.blue,
+                        highlightColor: Colors.blue,
                         hoverColor: Colors.yellowAccent,
                         borderRadius: BorderRadius.circular(100),
                         child: Container(

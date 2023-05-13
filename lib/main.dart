@@ -91,7 +91,6 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                   ],
                 ),
                 centerTitle: true,
-                // backgroundColor: null,
                 elevation: 0,
               ),
               body: Container(
@@ -126,7 +125,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                   builder: (context) => const BarcodePage()),
                             );
                           },
-                          // highlightColor: Colors.Blue,
+                          highlightColor: Colors.blue,
                           hoverColor: Colors.yellowAccent,
                           borderRadius: BorderRadius.circular(100),
                           child: Container(
@@ -163,7 +162,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                   builder: (context) => const BarcodePage()),
                             );
                           },
-                          // highlightColor: Colors.blue,
+                          highlightColor: Colors.blue,
                           hoverColor: Colors.yellowAccent,
                           borderRadius: BorderRadius.circular(100),
                           child: Container(
@@ -198,10 +197,9 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                   builder: (context) => const SoundsetPage()),
                             );
                           },
-                          // highlightColor: Colors.blue,
+                          highlightColor: Colors.blue,
                           hoverColor: Colors.yellowAccent,
-                          borderRadius: BorderRadius.circular(
-                              100), // 탭할 때 버튼 주변에 파란색 원형 애니메이션 생성
+                          borderRadius: BorderRadius.circular(100),
                           child: Container(
                             decoration: BoxDecoration(
                                 border: Border.all(
@@ -235,10 +233,9 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                     ? ThemeMode.dark
                                     : ThemeMode.light;
                           },
-                          // highlightColor: Colors.blue,
+                          highlightColor: Colors.blue,
                           hoverColor: Colors.yellowAccent,
-                          borderRadius: BorderRadius.circular(
-                              100), // 탭할 때 버튼 주변에 파란색 원형 애니메이션 생성
+                          borderRadius: BorderRadius.circular(100),
                           child: Container(
                             decoration: BoxDecoration(
                                 border: Border.all(

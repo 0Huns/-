@@ -34,7 +34,6 @@ class _BarcodePageState extends State<BarcodePage> {
                 ],
               ),
               centerTitle: true,
-              // backgroundColor: null,
             ),
             body: Center(
               child: Column(
