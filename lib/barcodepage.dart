@@ -20,6 +20,7 @@ class _BarcodePageState extends State<BarcodePage> {
         builder: (_, ThemeMode currentMode, __) {
           return Scaffold(
             appBar: AppBar(
+<<<<<<< HEAD
               title: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -33,6 +34,9 @@ class _BarcodePageState extends State<BarcodePage> {
                   ),
                 ],
               ),
+=======
+              title: const Text('CureEYE DEMO'),
+>>>>>>> 7abe508397d212ba0a8e02505bcb86066636a503
               centerTitle: true,
               // backgroundColor: null,
             ),
