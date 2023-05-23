@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_tts/flutter_tts.dart';
-import 'package:flutter_animated_icons/icons8.dart';
-import 'package:lottie/lottie.dart';
-import 'package:bootstrap_icons/bootstrap_icons.dart';
-import 'package:boxicons/boxicons.dart';
-import 'package:iconforest_teenyicons/teenyicons.dart';
 import 'themedata.dart';
-import 'soundsetpage.dart';
-import 'barcodepage.dart';
+import 'historypage.dart';
+import 'searchpage.dart';
+import 'communitypage.dart';
+import 'mainpage.dart';
+import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 
 void main() {
   runApp(const MyApp());
@@ -26,7 +23,6 @@ class MyApp extends StatelessWidget {
         builder: (_, ThemeMode currentMode, __) {
           return MaterialApp(
             debugShowCheckedModeBanner: false,
-            title: 'Flutter Demo',
             darkTheme: dark,
             theme: light,
             themeMode: currentMode,
@@ -43,32 +39,15 @@ class HomePage extends StatefulWidget {
   _HomePageState createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
-  FlutterTts flutterTts = FlutterTts();
-  late AnimationController _qrController;
-  late AnimationController _imageController;
-  late AnimationController _soundController;
+class _HomePageState extends State<HomePage> {
+  int _selectedIndex = 2;
 
-  @override
-  void initState() {
-    super.initState();
-
-    _qrController =
-        AnimationController(vsync: this, duration: const Duration(seconds: 1));
-    _imageController =
-        AnimationController(vsync: this, duration: const Duration(seconds: 1));
-    _soundController =
-        AnimationController(vsync: this, duration: const Duration(seconds: 1));
-  }
-
-  @override
-  void dispose() {
-    _qrController.dispose();
-    _imageController.dispose();
-    _soundController.dispose();
-
-    super.dispose();
-  }
+  final _screens = [
+    const SearchPage(),
+    const HistoryPage(),
+    const MainPage(),
+    const CommunityPage(),
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -93,168 +72,49 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                 centerTitle: true,
                 elevation: 0,
               ),
-              body: Container(
-                  margin: const EdgeInsets.all(4),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(30),
-                    border: Border.all(
-                      color: MyApp.themeNotifier.value == ThemeMode.light
-                          ? Colors.black
-                          : Colors.white,
-                      width: 5.0,
-                    ),
-                  ),
-                  child: GridView.count(
-                      crossAxisCount: 2,
-                      mainAxisSpacing: 40,
-                      crossAxisSpacing: 20,
-                      childAspectRatio: 1,
-                      padding: const EdgeInsets.only(
-                          bottom: 0, left: 15, top: 100, right: 15),
-                      children: [
-                        InkWell(
-                          onTap: () async {
-                            await flutterTts.speak('포장지 인식');
-                            _qrController.reset();
-                            _qrController.forward();
-                          },
-                          onDoubleTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => const BarcodePage()),
-                            );
-                          },
-                          highlightColor: Colors.blue,
-                          hoverColor: Colors.yellowAccent,
-                          borderRadius: BorderRadius.circular(100),
-                          child: Container(
-                              decoration: BoxDecoration(
-                                  border: Border.all(
-                                      color: MyApp.themeNotifier.value ==
-                                              ThemeMode.light
-                                          ? Colors.black
-                                          : Colors.white,
-                                      width: 4.0),
-                                  borderRadius: BorderRadius.circular(100)),
-                              padding: const EdgeInsets.all(5.0),
-                              child:
-                                  MyApp.themeNotifier.value == ThemeMode.light
-                                      ? Transform.scale(
-                                          scale: 1,
-                                          child: Lottie.asset(Icons8.qr_code,
-                                              controller: _qrController))
-                                      : const Icon(
-                                          BootstrapIcons.qr_code_scan,
-                                          size: 100,
-                                        )),
-                        ),
-                        InkWell(
-                          onTap: () async {
-                            await flutterTts.speak('알약 인식');
-                            _imageController.reset();
-                            _imageController.forward();
-                          },
-                          onDoubleTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => const BarcodePage()),
-                            );
-                          },
-                          highlightColor: Colors.blue,
-                          hoverColor: Colors.yellowAccent,
-                          borderRadius: BorderRadius.circular(100),
-                          child: Container(
-                            decoration: BoxDecoration(
-                                border: Border.all(
-                                    color: MyApp.themeNotifier.value ==
-                                            ThemeMode.light
-                                        ? Colors.black
-                                        : Colors.white,
-                                    width: 4.0),
-                                borderRadius: BorderRadius.circular(100)),
-                            padding: const EdgeInsets.all(5.0),
-                            child: MyApp.themeNotifier.value == ThemeMode.light
-                                ? Transform.scale(
-                                    scale: 1,
-                                    child: Lottie.asset(
-                                        Icons8.portrait_mode_scanning,
-                                        controller: _imageController))
-                                : const Icon(Boxicons.bx_scan, size: 100),
-                          ),
-                        ),
-                        InkWell(
-                          onTap: () async {
-                            await flutterTts.speak('소리 설정');
-                            _soundController.reset();
-                            _soundController.forward();
-                          },
-                          onDoubleTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => const SoundsetPage()),
-                            );
-                          },
-                          highlightColor: Colors.blue,
-                          hoverColor: Colors.yellowAccent,
-                          borderRadius: BorderRadius.circular(100),
-                          child: Container(
-                            decoration: BoxDecoration(
-                                border: Border.all(
-                                    color: MyApp.themeNotifier.value ==
-                                            ThemeMode.light
-                                        ? Colors.black
-                                        : Colors.white,
-                                    width: 4.0),
-                                borderRadius: BorderRadius.circular(100)),
-                            padding: const EdgeInsets.all(5.0),
-                            child: (MyApp.themeNotifier.value == ThemeMode.light
-                                ? Transform.scale(
-                                    scale: 1,
-                                    child: Lottie.asset(Icons8.adjust,
-                                        controller: _soundController))
-                                : Transform.scale(
-                                    scale: 0.6,
-                                    child: const Teenyicons(
-                                      Teenyicons.adjust_vertical_outline,
-                                      color: Colors.white,
-                                    ))),
-                          ),
-                        ),
-                        InkWell(
-                          onTap: () async {
-                            await flutterTts.speak('화면 설정');
-                          },
-                          onDoubleTap: () {
-                            MyApp.themeNotifier.value =
-                                MyApp.themeNotifier.value == ThemeMode.light
-                                    ? ThemeMode.dark
-                                    : ThemeMode.light;
-                          },
-                          highlightColor: Colors.blue,
-                          hoverColor: Colors.yellowAccent,
-                          borderRadius: BorderRadius.circular(100),
-                          child: Container(
-                            decoration: BoxDecoration(
-                                border: Border.all(
-                                    color: MyApp.themeNotifier.value ==
-                                            ThemeMode.light
-                                        ? Colors.black
-                                        : Colors.white,
-                                    width: 4.0),
-                                borderRadius: BorderRadius.circular(100)),
-                            padding: const EdgeInsets.all(5.0),
-                            child: Icon(
-                              MyApp.themeNotifier.value == ThemeMode.light
-                                  ? Icons.dark_mode
-                                  : Icons.light_mode,
-                              size: 140,
-                            ),
-                          ),
-                        )
-                      ])));
+              body: _screens[_selectedIndex], // 선택된 화면 표시
+              bottomNavigationBar: Semantics(
+                label: '화면 이동 하단 바',
+                value: 'Tab $_selectedIndex',
+                child: ConvexAppBar(
+                  items: [
+                    const TabItem(
+                        icon: Icons.local_hospital_outlined, title: '약품 검색'),
+                    const TabItem(icon: Icons.manage_search, title: '검색 기록'),
+                    const TabItem(
+                        icon: Icons.remove_red_eye_outlined, title: 'CURE EYE'),
+                    const TabItem(
+                        icon: Icons.question_answer_outlined, title: '커뮤니티'),
+                    TabItem(
+                        icon: MyApp.themeNotifier.value == ThemeMode.light
+                            ? Icons.dark_mode
+                            : Icons.light_mode,
+                        title: '다크모드')
+                  ],
+                  initialActiveIndex: 2,
+                  backgroundColor: MyApp.themeNotifier.value == ThemeMode.light
+                      ? Colors.white
+                      : Colors.black,
+                  activeColor: MyApp.themeNotifier.value == ThemeMode.light
+                      ? Colors.black
+                      : Colors.white,
+                  color: MyApp.themeNotifier.value == ThemeMode.light
+                      ? Colors.black
+                      : Colors.grey,
+                  onTap: (int index) {
+                    setState(() {
+                      if (index == 4) {
+                        MyApp.themeNotifier.value =
+                            MyApp.themeNotifier.value == ThemeMode.light
+                                ? ThemeMode.dark
+                                : ThemeMode.light;
+                      } else {
+                        _selectedIndex = index;
+                      }
+                    });
+                  },
+                ),
+              ));
         });
   }
 }
